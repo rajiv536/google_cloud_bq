@@ -1,0 +1,71 @@
+--select 3 columns from table
+
+SELECT Name, Equipment,Age FROM `rajivdemobq.rajivbq.openpowerlifting` 
+
+
+--select all columns 
+
+Select * from `rajivdemobq.rajivbq.openpowerlifting`
+
+
+--unique values sex amd equipment 
+
+select distinct Equipment,Sex  from `rajivdemobq.rajivbq.openpowerlifting`
+
+
+--operators and filters
+
+select * from `rajivdemobq.rajivbq.openpowerlifting`  
+where age < 30 
+
+
+-- equipment =! raw
+select * from `rajivdemobq.rajivbq.openpowerlifting`
+where Equipment <> 'Raw'
+
+--use multiple 
+
+select * from `rajivdemobq.rajivbq.openpowerlifting`
+where Equipment in ('Single-ply','Raw')
+
+
+--or operator 
+
+select * from `rajivdemobq.rajivbq.openpowerlifting`
+where Equipment in ('Single-ply','Raw') or Division ='Master 51+'
+
+
+--and operator
+select * from `rajivdemobq.rajivbq.openpowerlifting`
+where Equipment in ('Single-ply','Raw') and  Division ='Teen' 
+
+--limit and subqueries
+
+--top 10 rows
+select Name,Age from `rajivdemobq.rajivbq.openpowerlifting` 
+where Equipment = 'Raw'and Age is not null
+order by Age 
+limit 10 
+
+--oldest person in the table
+
+select Name,Age from `rajivdemobq.rajivbq.openpowerlifting` 
+where Equipment = 'Raw'and Age is not null
+order by Age desc
+limit 1
+
+--second oldest in the table
+select Name,Age from `rajivdemobq.rajivbq.openpowerlifting` where Equipment ='Raw'and Name <>
+    (select Name from `rajivdemobq.rajivbq.openpowerlifting` 
+    where Equipment = 'Raw'and Age is not null
+    order by Age desc
+    limit 1)
+order by age desc 
+limit 1
+
+-- distinct 10 from the list or age highest with no nulls 
+select distinct Name from 
+ ( select Name from `rajivdemobq.rajivbq.openpowerlifting` 
+        where Equipment = 'Raw'and Age is not null
+        order by Age desc
+        limit 10)
