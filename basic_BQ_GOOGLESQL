@@ -69,3 +69,63 @@ select distinct Name from
         where Equipment = 'Raw'and Age is not null
         order by Age desc
         limit 10)
+
+
+
+--Aggregation groupby and aliases
+
+--SIX aggregation SUM
+
+select sum(TotalKg)
+from `rajivdemobq.rajivbq.openpowerlifting` 
+where Equipment ='Raw' and Age <15
+
+--Count 
+select sum(TotalKg), COUNT(Name)
+from `rajivdemobq.rajivbq.openpowerlifting` 
+where Equipment ='Raw' and Age <15
+
+--avg max min 
+
+select sum(TotalKg), count(Name), Avg(TotalKg), max(TotalKg), min(TotalKg)
+from `rajivdemobq.rajivbq.openpowerlifting` 
+where Equipment ='Raw' and Age <15
+
+
+--count if 
+select countif(age < 14)
+from `rajivdemobq.rajivbq.openpowerlifting`
+
+--countif multiple statement 
+select countif(age <14 and Equipment = 'Raw')
+from `rajivdemobq.rajivbq.openpowerlifting`
+
+--groupby  and alias
+select Name,Equipment, Sum(TotalKg) as TotalKg_sum
+from `rajivdemobq.rajivbq.openpowerlifting`
+where Equipment = 'Raw' and Age <15
+Group By Name,Equipment
+
+
+--like and wildcards
+--starting with P
+
+select Name from `rajivdemobq.rajivbq.openpowerlifting`
+where Name like 'P%'
+
+-- ending Y 
+select Name from `rajivdemobq.rajivbq.openpowerlifting`
+where Name like '%Y'
+
+--second letter e 
+
+select Name from `rajivdemobq.rajivbq.openpowerlifting`
+where Name like '_e%'
+
+--having clause
+select Name, Sum(TotalKg) as TotalKg_sum
+from `rajivdemobq.rajivbq.openpowerlifting`
+--where TotalKg_sum > 500
+group by Name
+having TotalKg_sum > 500
+
