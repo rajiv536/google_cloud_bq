@@ -129,3 +129,79 @@ from `rajivdemobq.rajivbq.openpowerlifting`
 group by Name
 having TotalKg_sum > 500
 
+--union and union all and union distict and remove duplicated
+
+-- SELECT * FROM `rajivdemobq.rajivbq.openpowerlifting` 
+-- where Sex= 'M' 
+-- insert into 'rajivdemo.rajivbq.OPW_Male' 
+
+-- SELECT *
+-- FROM `rajivdemobq.rajivbq.openpowerlifting`
+-- WHERE Sex = 'M'
+
+CREATE OR REPLACE TABLE `rajivdemobq.rajivbq.OPW_Male` AS
+SELECT *
+FROM `rajivdemobq.rajivbq.openpowerlifting`
+WHERE Sex = 'M'
+
+CREATE OR REPLACE TABLE `rajivdemobq.rajivbq.OPW_Female` AS
+SELECT *
+FROM `rajivdemobq.rajivbq.openpowerlifting`
+WHERE Sex = 'F'
+
+-- union all from equipment column for raw and single-ply ( all select statements should be same and same type second rule order should be same)
+select Name,Age from `rajivdemobq.rajivbq.OPW_Female`
+where Equipment ='Raw'
+
+union all 
+
+select Name,Age from `rajivdemobq.rajivbq.OPW_Male`
+where Equipment ='Single-ply'
+
+
+-- union distinct to remove duplicates ( vertically)
+
+select Name,Age from `rajivdemobq.rajivbq.OPW_Female`
+where Equipment ='Raw'
+
+union distinct 
+
+select Name,Age from `rajivdemobq.rajivbq.OPW_Female`
+where Equipment ='Single-ply'
+
+
+--using joins from multiple tables (horizontally joining tables)
+
+--meetid (20,6,100) left join left table and matching records or right 
+
+select pw.Name,pw.Equipment,pw.Division
+from `rajivdemobq.rajivbq.openpowerlifting` as pw
+left join `rajivdemobq.rajivbq.meets` as mt
+on pw.MeetID = mt.MeetID
+where pw.MeetID in (20,62,100)
+
+
+--right join right table and matching records of left 
+select pw.Name,pw.Equipment,pw.Division
+from `rajivdemobq.rajivbq.openpowerlifting` as pw
+right join `rajivdemobq.rajivbq.meets` as mt
+on pw.MeetID = mt.MeetID
+
+
+
+--inner join (Full matching in both only)
+
+select pw.Name,pw.Equipment,pw.Division
+from `rajivdemobq.rajivbq.openpowerlifting` as pw
+inner join `rajivdemobq.rajivbq.meets` as mt
+on pw.MeetID = mt.MeetID
+
+
+--full outer join (everything match no match all )
+select pw.Name,pw.Equipment,pw.Division
+from `rajivdemobq.rajivbq.openpowerlifting` as pw
+full outer join  `rajivdemobq.rajivbq.meets` as mt
+on pw.MeetID = mt.MeetID
+where pw.MeetID in (20,62,100)
+
+
