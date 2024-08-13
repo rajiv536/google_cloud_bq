@@ -262,3 +262,67 @@ select
 * from unnest ([struct('A' as name,20 as age),('B',24)])
 
 
+
+--DML update insert and delete 
+
+-- remove null with n/a in divison column 
+update `rajivdemobq.rajivbq.openpowerlifting`
+set Division = 'N/A'
+where Division is null
+
+--verify 
+select distinct division from `rajivdemobq.rajivbq.openpowerlifting` 
+where Division is null
+
+--update can be done in multiple columns 
+update `rajivdemobq.rajivbq.openpowerlifting`
+set Squat4Kg = 0, Bench4Kg =0
+where Division = 'N/A'
+
+
+---update all squat and bench
+-- update all squat4kg and Bench 4Kg where it is null to 0 in openpowerlifting table
+UPDATE
+    rajivdemobq.rajivbq.openpowerlifting
+  SET
+    Squat4Kg = CASE
+      WHEN Squat4Kg IS NULL THEN 0
+      ELSE Squat4Kg
+    END,
+    Bench4Kg = CASE
+      WHEN Bench4Kg IS NULL THEN 0
+      ELSE Bench4Kg
+    END
+  WHERE
+    Squat4Kg IS NULL
+    OR Bench4Kg IS NULL;
+
+
+--insert 
+Insert into `rajivdemobq.rajivbq.meets`
+values (9999,'abc','feb','2024-08-13','xyz','pqr','qqr','tsx')
+
+--validate 
+select * from `rajivdemobq.rajivbq.meets`
+where MeetID = 9999
+
+--insert into selected columns 
+Insert into `rajivdemobq.rajivbq.meets` (MeetID,MeetPath,Federation,Date)
+values (99991,'abc','feb','2024-08-13')
+
+--validate 
+select * from `rajivdemobq.rajivbq.meets`
+where MeetID = 99991
+
+
+--delete 
+select * from `rajivdemobq.rajivbq.meets`
+where MeetID = 99991
+
+--delete the meetcountry is null from newly creted id 
+delete from `rajivdemobq.rajivbq.meets`
+where meetID = 99991 and MeetCountry is null 
+
+
+
+
