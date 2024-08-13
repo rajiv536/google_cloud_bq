@@ -324,5 +324,37 @@ delete from `rajivdemobq.rajivbq.meets`
 where meetID = 99991 and MeetCountry is null 
 
 
+select Segment,Country, Sum (Sales) as Totalsales
+from `rajivdemobq.customer_data.sales`
+group by 1,2
+order by country, Totalsales desc 
+
+
+--Segment sales_
+-- select *,
+-- Totalsales / (sum(Totalsales) over (partition by Country)) as pct_sales,
+-- (sum(Totalsales) over (partition by Country)) as country_sales from
+--     select Segment,Country, Sum (Sales) as Totalsales
+--     from `rajivdemobq.customer_data.sales`
+--     group by 1,2
+--     order by country, Totalsales desc
+SELECT
+    *,
+    Totalsales / SUM(Totalsales) OVER (PARTITION BY Country) AS pct_sales,
+    SUM(Totalsales) OVER (PARTITION BY Country) AS country_sales
+  FROM
+    (
+      SELECT
+          Segment,
+          Country,
+          SUM(Sales) AS Totalsales
+        FROM
+          `rajivdemobq.customer_data.sales`
+        GROUP BY 1, 2
+    )
+ORDER BY
+  Country,
+  Totalsales DESC;
+
 
 
