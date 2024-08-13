@@ -205,3 +205,60 @@ on pw.MeetID = mt.MeetID
 where pw.MeetID in (20,62,100)
 
 
+
+
+--case statement 
+
+--build logic (if else kind off type)
+
+--age <12 very young if 12-15 young 16-35 adult or old end it
+
+select Name,Age,
+case
+when  Age <12 then'very young'
+when Age between 12 and 15 then 'young'
+when Age between 16 and 35 then 'Adult'
+else 'old'
+end as Age_category
+from `rajivdemobq.rajivbq.openpowerlifting`
+
+
+--decimals in table and nulls 
+
+select Name,Age,
+case
+when Age is null then 'N/A'
+when  Age <12 then'very young'
+when Age between 12 and 15 then 'young'
+when Age between 15 and 35 then 'Adult'
+else 'old'
+end as Age_category
+from `rajivdemobq.rajivbq.openpowerlifting`
+
+
+--unnest and struct with arrays 
+
+select [1,2,12,22,33,44,11] as initarray
+
+--generate array
+select GENERATE_ARRAY(1, 1000, 10) as initarray
+
+--create array [1-1000 and should be 10 numbers away] limit upto 500 
+
+select * from unnest (GENERATE_ARRAY(1,1000,1)) as initarray
+where initarray <500
+
+
+--create an array and subquery it with lmit and buld an new columns *3 
+
+select initarray, initarray * 3 as newinitarray from 
+  (select * from unnest (GENERATE_ARRAY(1,1000,1)) as initarray
+  where initarray <500)
+
+
+--struct using 2 dimenstional table
+
+select 
+* from unnest ([struct('A' as name,20 as age),('B',24)])
+
+
