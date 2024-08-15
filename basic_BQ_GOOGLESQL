@@ -39,6 +39,26 @@ where Equipment in ('Single-ply','Raw') or Division ='Master 51+'
 select * from `rajivdemobq.rajivbq.openpowerlifting`
 where Equipment in ('Single-ply','Raw') and  Division ='Teen' 
 
+
+
+
+--create an routine
+
+CREATE OR REPLACE PROCEDURE `rajivdemobq.rajivbq.updateAtheletes`()
+BEGIN
+    Delete from `rajivdemobq.rajivbq.openpowerlifting`
+    where sex is not null;
+
+    Insert into `rajivdemobq.rajivbq.OPW_Female`
+    select * from `rajivdemobq.rajivbq.openpowerlifting`
+    where sex ='F' and Equipment = 'Single-Ply' and Age < 20;
+
+
+  end;
+--call an routine 
+call rajivdemobq.rajivbq.updateAtheletes()
+
+
 --limit and subqueries
 
 --top 10 rows
