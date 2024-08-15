@@ -479,3 +479,13 @@ safe_OFFSET
 FROM
   `rajivdemobq.rajivbq.openpowerlifting`
 
+
+
+
+----create a view listing only few columns 
+ 
+
+create view `customer_data.apple_view_new` as 
+select Date, Open,Volume
+from `customer_data.apple`
+
