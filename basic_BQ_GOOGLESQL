@@ -358,3 +358,104 @@ ORDER BY
 
 
 
+  -- select date and close and identify moving average for 7days from customer_data and apple
+SELECT
+  Date,
+  Close,
+  AVG(Close) OVER (ORDER BY Date ASC ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS MovingAverage7Day
+FROM
+  `rajivdemobq.customer_data.apple` AS AppleStock
+ORDER BY
+  Date;
+  --15daays mv avg  (used for timeseries values)
+SELECT
+  Date,
+  Close,
+  AVG(Close) OVER (ORDER BY Date ASC ROWS BETWEEN 14 PRECEDING AND CURRENT ROW) AS MovingAverage15Day,
+  AVG(Close) OVER (ORDER BY Date ASC ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS MovingAverage7Day
+FROM
+  `rajivdemobq.customer_data.apple` AS AppleStock
+ORDER BY
+  Date;
+  --Lag function
+  ---- sort the date column and create a previous close using lag using the close from apple
+SELECT
+  Date,
+  Close,
+  LAG(Close, 1) OVER (ORDER BY Date) AS Previous_Close
+FROM
+  `rajivdemobq.customer_data.apple`
+ORDER BY
+  Date;
+  --sort 2 rows lag and create an day previous close
+SELECT
+  Date,
+  Close,
+  LAG(Close, 2) OVER (ORDER BY Date) AS Previous_Close
+FROM
+  `rajivdemobq.customer_data.apple`
+ORDER BY
+  Date;
+  --date and extraction function
+  --used mostly for data cleaning
+  --1st new column as month and fill in with logic
+SELECT
+  DATE(2023,2,22)
+  --convert everything to month
+SELECT
+  DATE( EXTRACT(year
+    FROM
+      Date), EXTRACT (month
+    FROM
+      Date),1) AS monthval,
+  AVG(close)
+FROM
+  `rajivdemobq.customer_data.apple`
+GROUP BY
+  Date
+ORDER BY
+  Date
+  ---- convert for date column  in day wise and give me the highest volume day and lowest volume day
+SELECT
+  Date,
+  MAX(Volume) AS highest_volume,
+  MIN(Volume) AS lowest_volume
+FROM
+  `rajivdemobq.customer_data.apple`
+GROUP BY
+  1;
+  --TEXT and manipulation function in sql
+  --concat
+SELECT
+  CONCAT('big', 'query')
+  --table (Join two columns with - in between)
+SELECT
+  *,
+  CONCAT(Name, '-',Sex)
+FROM
+  `rajivbq.openpowerlifting`
+  --split
+SELECT
+  SPLIT(Equipment,'-') [
+OFFSET
+  (0)] AS fisrtval,
+  SPLIT(Equipment,'-') [
+OFFSET
+  (1)] AS Secondval
+FROM
+  `rajivdemobq.rajivbq.openpowerlifting`
+WHERE
+  Equipment LIKE 'Single%'
+
+--safeoffset 
+
+SELECT DISTINCT
+  SPLIT(Equipment,'-') [
+safe_OFFSET
+  (0)] AS fisrtval,
+  SPLIT(Equipment,'-') [
+safe_OFFSET
+  (1)] AS Secondval
+FROM
+  `rajivdemobq.rajivbq.openpowerlifting`
+
