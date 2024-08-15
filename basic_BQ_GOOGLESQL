@@ -489,3 +489,10 @@ create view `customer_data.apple_view_new` as
 select Date, Open,Volume
 from `customer_data.apple`
 
+
+
+--materialized view
+
+create materialized view `customer_data.apple_materializedview_new` as 
+select Date, Open,Volume
+from `customer_data.apple`
